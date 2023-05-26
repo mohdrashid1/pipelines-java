@@ -38,14 +38,30 @@ strategy:
 pool:
   vmImage: $(imageName)
 
-steps:
-- task: Maven@4
-  inputs:
-    mavenPomFile: "pom.xml"
-    mavenOptions: "-Xmx3072m"
-    javaHomeOption: "JDKVersion"
-    jdkVersionOption: $(jdkVersion)
-    jdkArchitectureOption: "x64"
-    publishJUnitResults: true
-    testResultsFiles: "**/TEST-*.xml"
-    goals: "package"
+# steps:
+# - task: Maven@4
+#   inputs:
+#     mavenPomFile: "pom.xml"
+#     mavenOptions: "-Xmx3072m"
+#     javaHomeOption: "JDKVersion"
+#     jdkVersionOption: $(jdkVersion)
+#     jdkArchitectureOption: "x64"
+#     publishJUnitResults: true
+#     testResultsFiles: "**/TEST-*.xml"
+#     goals: "package"
+
+- stage: deploy
+  jobs:
+  - deployment: DeployWeb
+    displayName: deploy Web App
+    pool:
+      vmImage: 'Ubuntu-latest'
+    # creates an environment if it doesn't exist
+    environment: 'Dev Env'
+      resourceName: myVM
+      resourceType: virtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo Hello world
