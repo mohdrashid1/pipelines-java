@@ -22,7 +22,8 @@
 #     goals: 'package'
 
 trigger:
-- main
+#- main
+- develop
 
 strategy:
   matrix:
